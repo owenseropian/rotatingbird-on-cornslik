@@ -23,12 +23,12 @@ async function setup(){
   
   const gif = await nn.loadImage(GIF)
   
-  let num_birds = 25
-  let num_rows = 10
+  let num_birds = 50
+  let num_rows = 50
   for (let i = 0; i < num_birds; i++){
-    let x = nn.width / num_birds * i - gif.width/2
+    let x = nn.width / num_birds * i - gif.width/2 + 1
     for (let j = 0; j < num_rows; j++){
-      let y = (nn.height * 0.9) / num_rows * j
+      let y = (nn.height * 0.9) / num_rows * j + 1
       createGIF(x, y)
     }
   }
