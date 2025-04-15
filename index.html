@@ -26,7 +26,7 @@ async function setup(){
   nn.create('input')
     .set({
       type: 'range',
-      min: 360,
+      min: 0,
       max: 3600,
       value: 360,
       step: 1
@@ -51,12 +51,12 @@ async function setup(){
   
   const gif = await nn.loadImage(GIF)
   
-  let num_birds = 50
-  let num_rows = 50
+  let num_birds = 1000
+  let num_rows = 1
   for (let i = 0; i < num_birds; i++){
     let x = nn.width / num_birds * i - gif.width/2
     for (let j = 0; j < num_rows; j++){
-      let y = (nn.height * 0.9) / num_rows * j
+      let y = (nn.height * 0.9) / num_rows * j + (nn.height / (num_rows+1) - gif.height/2)
       createGIF(x, y)
     }
   }
