@@ -5,8 +5,10 @@
 const GIF = "bird_2.gif"
 const COLOR = "cornsilk"
 
+let multiplier = 360
+
 const createGIF = function(x, y){
-  let rotate = (x+y) / (nn.width) * 360
+  let rotate = (x+y) / (nn.width) * multiplier
   nn.create("img")
     .set({src: GIF})
     .css({
@@ -20,6 +22,32 @@ const createGIF = function(x, y){
 
 async function setup(){
   nn.get("body").css({backgroundColor: COLOR})
+  
+  nn.create('input')
+    .set({
+      type: 'range',
+      min: 360,
+      max: 3600,
+      value: 360,
+      step: 360
+    })
+    .addTo('body')
+    .on('input', (e) => {
+      multiplier = Number(e.target.value)
+      nn.getAll("img").forEach((img) => {
+        let rotate = (img.x+img.y) / (nn.width) * multiplier
+        img.style.transform = `rotate(${rotate}deg)`
+      })
+      console.log(multiplier)
+    })
+    .css({
+      position: "absolute",
+      left: 10,
+      bottom: 10,
+      width: nn.width - 20,
+      zIndex: 10
+    
+  })
   
   const gif = await nn.loadImage(GIF)
   
