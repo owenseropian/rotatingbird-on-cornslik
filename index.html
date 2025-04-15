@@ -5,29 +5,35 @@
 const GIF = "bird_2.gif"
 const COLOR = "cornsilk"
 
-const setup = function(){
+const createGIF = function(x, y){
+  let rotate = (x+y) / (nn.width) * 360
+  nn.create("img")
+    .set({src: GIF})
+    .css({
+      position: "absolute",
+      left: x,
+      top: y,
+      transform: `rotate(${rotate}deg)`
+    })
+    .addTo("body")
+}
+
+async function setup(){
   nn.get("body").css({backgroundColor: COLOR})
   
-  let size = nn.width > nn.height ? nn.height / 2 : nn.width / 2
+  const gif = await nn.loadImage(GIF)
   
-  let x = nn.width / 2 - size/2
-  let y = nn.height / 2 - size/2
-  
-  for (let i = 0; i < 10; i++){
-    nn.create("img")
-      .set({src: GIF})
-      .css({
-        position: "absolute",
-        left: x,
-        top: y,
-        width: size
-      })
-      .addTo("body")
+  let num_birds = 25
+  let num_rows = 10
+  for (let i = 0; i < num_birds; i++){
+    let x = nn.width / num_birds * i - gif.width/2
+    for (let j = 0; j < num_rows; j++){
+      let y = (nn.height * 0.9) / num_rows * j
+      createGIF(x, y)
+    }
   }
 }
   
 nn.on("load", setup)
-  
-</script>
   
 </script>
