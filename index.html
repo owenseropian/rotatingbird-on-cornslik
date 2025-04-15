@@ -1,0 +1,33 @@
+<script src="https://cdn.jsdelivr.net/gh/netizenorg/netnet-standard-library/build/nn.min.js"></script>
+<script>
+/* global nn */ 
+  
+const GIF = "bird_2.gif"
+const COLOR = "cornsilk"
+
+const setup = function(){
+  nn.get("body").css({backgroundColor: COLOR})
+  
+  let size = nn.width > nn.height ? nn.height / 2 : nn.width / 2
+  
+  let x = nn.width / 2 - size/2
+  let y = nn.height / 2 - size/2
+  
+  for (let i = 0; i < 10; i++){
+    nn.create("img")
+      .set({src: GIF})
+      .css({
+        position: "absolute",
+        left: x,
+        top: y,
+        width: size
+      })
+      .addTo("body")
+  }
+}
+  
+nn.on("load", setup)
+  
+</script>
+  
+</script>
