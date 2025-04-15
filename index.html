@@ -29,7 +29,7 @@ async function setup(){
       min: 360,
       max: 3600,
       value: 360,
-      step: 360
+      step: 1
     })
     .addTo('body')
     .on('input', (e) => {
@@ -54,9 +54,9 @@ async function setup(){
   let num_birds = 50
   let num_rows = 50
   for (let i = 0; i < num_birds; i++){
-    let x = nn.width / num_birds * i - gif.width/2 + 1
+    let x = nn.width / num_birds * i - gif.width/2
     for (let j = 0; j < num_rows; j++){
-      let y = (nn.height * 0.9) / num_rows * j + 1
+      let y = (nn.height * 0.9) / num_rows * j
       createGIF(x, y)
     }
   }
