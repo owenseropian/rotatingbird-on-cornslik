@@ -7,8 +7,8 @@ const COLOR = "cornsilk"
 
 let multiplier = 360
 
-const createGIF = function(x, y){
-  let rotate = (x+y) / (nn.width) * multiplier
+const createGIF = function(x, y, angle){
+  let rotate = angle / Math.PI * multiplier
   nn.create("img")
     .set({src: GIF})
     .css({
@@ -23,12 +23,12 @@ const createGIF = function(x, y){
 async function setup(){
   nn.get("body").css({backgroundColor: COLOR})
   
-  nn.create('input')
+  /*nn.create('input')
     .set({
       type: 'range',
       min: 0,
       max: 3600,
-      value: 360,
+      value: multiplier,
       step: 1
     })
     .addTo('body')
@@ -47,17 +47,21 @@ async function setup(){
       width: nn.width - 20,
       zIndex: 10
     
-  })
+  })*/
   
   const gif = await nn.loadImage(GIF)
   
-  let num_birds = 1000
-  let num_rows = 1
+  let num_birds = 50
+  let num_circles = 3
   for (let i = 0; i < num_birds; i++){
-    let x = nn.width / num_birds * i - gif.width/2
-    for (let j = 0; j < num_rows; j++){
-      let y = (nn.height * 0.9) / num_rows * j + (nn.height / (num_rows+1) - gif.height/2)
-      createGIF(x, y)
+    for (let j = 0; j < num_circles; j++){
+      let x = (nn.width - gif.width) / 2 
+      let y = (nn.height - gif.height) / 2 
+      let radius = Math.min(x, y) * ((j+1)/num_circles)
+      let angle = (2*Math.PI)/(num_birds)*i
+      x += Math.cos(angle) * radius
+      y += Math.sin(angle) * radius
+      createGIF(x, y, angle)
     }
   }
 }
