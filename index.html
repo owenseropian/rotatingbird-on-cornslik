@@ -5,7 +5,7 @@
 const GIF = "bird_2.gif"
 const COLOR = "cornsilk"
 
-let multiplier = 360
+let multiplier = 0
 
 const createGIF = function(x, y, angle){
   let rotate = angle / (Math.PI*2) * multiplier
@@ -15,50 +15,65 @@ const createGIF = function(x, y, angle){
       position: "absolute",
       left: x,
       top: y,
-      transform: `rotate(${rotate}deg)`
+      transform: `rotate(${rotate}deg)`,
+      angle: angle
     })
     .addTo("body")
+}
+
+const createSlider = function(min, max, start, step, num, func){
+  nn.create('input')
+    .set({
+      type: 'range',
+      min: min,
+      max: max,
+      value: start,
+      step: step
+    })
+    .addTo('body')
+    .on('input', (e) => {func(e)})
+    .css({
+      position: "absolute",
+      left: 10,
+      bottom: 10 + 20 * num,
+      width: nn.width - 20,
+      zIndex: 10
+    
+  })
 }
 
 async function setup(){
   nn.get("body").css({backgroundColor: COLOR})
   
-  /*nn.create('input')
-    .set({
-      type: 'range',
-      min: 0,
-      max: 3600,
-      value: multiplier,
-      step: 1
+  //rotation slider
+  createSlider(0, 3600, multiplier, 360, 0, (e) => {
+    multiplier = Number(e.target.value)
+    nn.getAll("img").forEach((img) => {
+      let rotate = img.style.angle / (Math.PI*2) * multiplier
+      img.style.transform = `rotate(${rotate}deg)`
     })
-    .addTo('body')
-    .on('input', (e) => {
-      multiplier = Number(e.target.value)
-      nn.getAll("img").forEach((img) => {
-        let rotate = (img.x+img.y) / (nn.width) * multiplier
-        img.style.transform = `rotate(${rotate}deg)`
-      })
-      console.log(multiplier)
+  })
+  
+  /*createSlider(0, 3600, multiplier, 360, 1, (e) => {
+    multiplier = Number(e.target.value)
+    nn.getAll("img").forEach((img) => {
+      let rotate = img.style.angle / (Math.PI*2) * multiplier
+      img.style.transform = `rotate(${rotate}deg)`
     })
-    .css({
-      position: "absolute",
-      left: 10,
-      bottom: 10,
-      width: nn.width - 20,
-      zIndex: 10
-    
   })*/
   
   const gif = await nn.loadImage(GIF)
   
-  let num_birds = 50
-  let num_circles = 3
-  for (let i = 0; i < num_birds; i++){
-    for (let j = 0; j < num_circles; j++){
+  //number of circles
+  let num_circles = 4
+  for (let j = 0; j < num_circles; j++){
+    //denisty of birds in each circle
+    let num_birds = 20 * (j+1)
+    for (let i = 0; i < num_birds; i++){
       let x = (nn.width - gif.width) / 2 
       let y = (nn.height - gif.height) / 2 
       let radius = Math.min(x, y) * ((j+1)/num_circles)
-      let angle = (2*Math.PI)/(num_birds)*i
+      let angle = (2*Math.PI)/num_birds*i
       x += Math.cos(angle) * radius
       y += Math.sin(angle) * radius
       createGIF(x, y, angle)
