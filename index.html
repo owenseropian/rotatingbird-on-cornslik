@@ -8,7 +8,7 @@ const COLOR = "cornsilk"
 let multiplier = 360
 
 const createGIF = function(x, y, angle){
-  let rotate = angle / Math.PI * multiplier
+  let rotate = angle / (Math.PI*2) * multiplier
   nn.create("img")
     .set({src: GIF})
     .css({
