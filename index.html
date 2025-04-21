@@ -8,6 +8,7 @@ const COLOR = "cornsilk"
 let multiplier = 0
 let num_circles = 4
 let birds = 20
+let scale = 1
 
 const createGIF = function(x, y, angle){
   let rotate = angle / (Math.PI*2) * multiplier
@@ -56,8 +57,8 @@ async function setup(){
     })
   })
   
-  createSlider(0, 4, 0, 0.25, 1, (e) => {
-    console.log(Number(e.target.value))
+  //radius slider
+  createSlider(0, 4, 0, 0.1, 1, (e) => {
     let i = 0
     let j = 1
     nn.getAll("img").forEach((img) => {
@@ -80,6 +81,21 @@ async function setup(){
   })
   
   const gif = await nn.loadImage(GIF)
+  
+  //scale slider
+  createSlider(0, 1, 1, 0.01, 2, (e) => {  
+    nn.getAll("img").forEach((img) => {
+      let curr_width = img.width
+      let curr_height = img.height
+      img.width = gif.width * Number(e.target.value)
+      let x = Number(img.style.left.slice(0, -2)) + (curr_width - img.width) / 2
+      let y = Number(img.style.top.slice(0, -2)) + (curr_height - img.height) / 2
+      img.style.left = `${x}px`
+      img.style.top = `${y}px`
+    })
+    scale = Number(e.target.value)
+    
+  })
   
   //number of circles
   for (let j = 0; j < num_circles; j++){
